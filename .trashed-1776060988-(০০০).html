@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>30s AI Signal Market Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    background:#001a00;
+    font-family:Arial;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    color:#ffffff;
+    padding-top:80px;
+}
+
+/* Active Users */
+.activeUsers{
+    position:fixed;
+    top:10px;
+    left:20px;
+    background:#000;
+    border:2px solid #fff;
+    border-radius:12px;
+    padding:6px 14px;
+    font-size:18px;
+    font-weight:bold;
+    color:#00ff00;
+    box-shadow:0 0 12px #00ff00;
+}
+
+/* ===== SIGNAL COURT ===== */
+.gameCourt{
+    width:90%;
+    max-width:900px;
+    height:190px;
+    border:3px solid #fff;
+    border-radius:16px;
+    background:#000;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    margin-top:20px;
+    padding:4px;
+}
+
+/* Clock inside signal box */
+.signalClock{
+    position:absolute;
+    top:6px;
+    left:10px;
+    background:#000;
+    border:1px solid #fff;
+    border-radius:8px;
+    padding:4px 8px;
+    font-size:14px;
+    color:#ff4444;
+    text-align:left;
+}
+
+.signalDate{
+    font-size:12px;
+    color:#ffff00;
+}
+
+/* Signal */
+#signalText{
+    font-size:44px;
+    font-weight:bold;
+}
+
+/* Chance */
+#chanceText{
+    font-size:20px;
+    margin-top:2px;
+    color:#ffff00;
+}
+
+/* AI Status */
+.aiStatus{
+    font-size:15px;
+    color:#00ffff;
+    margin-top:1px;
+}
+
+/* Market Trend */
+.marketTrend{
+    font-size:15px;
+    color:#ff9900;
+    margin-top:1px;
+}
+
+/* Period */
+.periodBox{
+    position:absolute;
+    bottom:6px;
+    font-size:16px;
+    color:#00ff00;
+}
+
+.timeRemaining{
+    position:absolute;
+    top:6px;
+    right:10px;
+    font-size:16px;
+}
+
+/* ===== GAME AREA (UNCHANGED) ===== */
+#gameArea{
+    width:90%;
+    max-width:900px;
+    min-height:400px;
+    margin-top:40px;
+    border:4px solid #ffff00;
+    border-radius:20px;
+    background:#002200;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    color:#ffffff;
+    font-size:26px;
+    text-align:center;
+    padding:15px;
+}
+
+.gameTitle{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.gameFrame{
+    width:100%;
+    height:350px;
+    border:none;
+    border-radius:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="activeUsers" id="activeUsers">💸 : 0</div>
+
+<div class="gameCourt">
+
+    <!-- Clock + Date -->
+    <div class="signalClock">
+        <div id="clockBox">00:00:00</div>
+        <div class="signalDate" id="dateBox">00/00/0000</div>
+    </div>
+
+    <div id="signalText">WAIT...</div>
+    <div id="chanceText">AI Confidence: --%</div>
+    <div class="aiStatus" id="aiStatus">🤖 AI Analyzing Market...</div>
+    <div class="marketTrend" id="marketTrend">Trend: --</div>
+    <div class="periodBox" id="periodBox">PERIOD: ------</div>
+    <div class="timeRemaining" id="timeRemaining">30s</div>
+</div>
+
+<!-- Game Area -->
+<div id="gameArea">
+    <div class="gameTitle">🎮 কালার ট্রেডিং হ্যাক</div>
+    <iframe class="gameFrame"
+        src="https://dkwin9.com/#/register?invitationCode=75518598003"
+        allowfullscreen>
+    </iframe>
+</div>
+
+<script>
+const signals = ["BIG", "SMALL"];
+let countdown = 30;
+
+/* Clock */
+function updateClock(){
+    const d = new Date();
+    clockBox.innerText =
+        String(d.getHours()).padStart(2,'0') + ":" +
+        String(d.getMinutes()).padStart(2,'0') + ":" +
+        String(d.getSeconds()).padStart(2,'0');
+
+    dateBox.innerText =
+        String(d.getDate()).padStart(2,'0') + "/" +
+        String(d.getMonth()+1).padStart(2,'0') + "/" +
+        d.getFullYear();
+}
+setInterval(updateClock,1000);
+updateClock();
+
+/* Active Users */
+function updateActiveUsers(){
+    activeUsers.innerText = "💸 : " + (Math.floor(Math.random()*300)+100);
+}
+setInterval(updateActiveUsers,5000);
+updateActiveUsers();
+
+/* Period */
+function generatePeriod(){
+    const d = new Date();
+    return d.getFullYear() +
+           String(d.getMonth()+1).padStart(2,'0') +
+           String(d.getDate()).padStart(2,'0') +
+           String(d.getHours()).padStart(2,'0') +
+           String(d.getMinutes()).padStart(2,'0') +
+           Math.floor(d.getSeconds()/30);
+}
+
+/* AI Signal */
+function generateAISignal(){
+    const signal = signals[Math.floor(Math.random()*2)];
+    const number = signal === "BIG"
+        ? Math.floor(Math.random()*5)+5
+        : Math.floor(Math.random()*5);
+
+    const confidence = Math.floor(Math.random()*15)+70;
+    const trend = confidence > 80 ? "Strong" : "Moderate";
+
+    signalText.innerText = signal + " " + number;
+    signalText.style.color = signal === "BIG" ? "#00ff00" : "#ff4444";
+
+    chanceText.innerText = "AI Confidence: " + confidence + "%";
+    aiStatus.innerText = "🤖 AI Signal Generated";
+    marketTrend.innerText = "Trend: " + trend;
+    periodBox.innerText = "PERIOD: • " + generatePeriod();
+
+    countdown = 30;
+}
+
+/* Countdown */
+setInterval(()=>{
+    countdown--;
+    timeRemaining.innerText = countdown + "s";
+    if(countdown <= 0){
+        generateAISignal();
+    } else if(countdown <= 5){
+        aiStatus.innerText = "🤖 AI Analyzing...";
+    }
+},1000);
+
+generateAISignal();
+</script>
+
+</body>
+</html>
